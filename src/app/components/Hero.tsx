@@ -66,7 +66,7 @@ export function Hero() {
           <div className="relative">
             <div className="rounded-2xl overflow-hidden shadow-2xl">
               <img
-                src="https://images.unsplash.com/photo-1758611974775-39e307bc3da9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxzdHVkZW50cyUyMGxlYXJuaW5nJTIwb25saW5lJTIwZWR1Y2F0aW9uJTIwY2xhc3Nyb29tfGVufDF8fHx8MTc3NDg5NTM0MHww&ixlib=rb-4.1.0&q=80&w=1080"
+                src="/images/photo-03.jpg"
                 alt="Онлайн-обучение студентов"
                 className="w-full h-full object-cover"
               />
