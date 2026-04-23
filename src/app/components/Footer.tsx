@@ -1,4 +1,13 @@
 import { BookOpen, Facebook, Twitter, Instagram, Linkedin } from 'lucide-react';
+import { Link } from 'react-router';
+
+const footerCourses = [
+  { label: 'Веб-разработка', slug: 'polnaya-veb-razrabotka' },
+  { label: 'Анализ данных', slug: 'data-science-i-ml' },
+  { label: 'Бизнес', slug: 'biznes-strategiya' },
+  { label: 'Дизайн', slug: 'ui-ux-design' },
+  { label: 'Маркетинг', slug: 'digital-marketing' },
+];
 
 export function Footer() {
   return (
@@ -8,63 +17,70 @@ export function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <BookOpen className="w-8 h-8" />
-              <span className="text-xl font-semibold">EduCenter</span>
+              <span className="text-xl font-semibold">ВысшийБалл</span>
             </div>
             <p className="text-primary-foreground/80">
-              Empowering learners worldwide with quality education and expert instruction.
+              Качественное онлайн-обучение и поддержка на каждом шаге — для студентов по всему миру.
             </p>
             <div className="flex gap-3">
-              <button className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors">
+              <button type="button" className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors" aria-label="Facebook">
                 <Facebook className="w-5 h-5" />
               </button>
-              <button className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors">
+              <button type="button" className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors" aria-label="Twitter">
                 <Twitter className="w-5 h-5" />
               </button>
-              <button className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors">
+              <button type="button" className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors" aria-label="Instagram">
                 <Instagram className="w-5 h-5" />
               </button>
-              <button className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors">
+              <button type="button" className="p-2 bg-primary-foreground/10 rounded-lg hover:bg-primary-foreground/20 transition-colors" aria-label="LinkedIn">
                 <Linkedin className="w-5 h-5" />
               </button>
             </div>
           </div>
 
           <div>
-            <h4 className="mb-4">Courses</h4>
+            <h4 className="mb-4">Курсы</h4>
             <ul className="space-y-2 text-primary-foreground/80">
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Web Development</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Data Science</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Business</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Design</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Marketing</a></li>
+              <li>
+                <Link to="/courses" className="hover:text-primary-foreground transition-colors font-medium">
+                  Все курсы (каталог)
+                </Link>
+              </li>
+              {footerCourses.map((c) => (
+                <li key={c.slug}>
+                  <Link to={`/courses/${c.slug}`} className="hover:text-primary-foreground transition-colors">
+                    {c.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           <div>
-            <h4 className="mb-4">Company</h4>
+            <h4 className="mb-4">Компания</h4>
             <ul className="space-y-2 text-primary-foreground/80">
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">About Us</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Careers</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Press</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Blog</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Contact</a></li>
+              <li><Link to="/about" className="hover:text-primary-foreground transition-colors">О нас</Link></li>
+              <li><Link to="/programs" className="hover:text-primary-foreground transition-colors">Программы и ивенты</Link></li>
+              <li><Link to="/teachers" className="hover:text-primary-foreground transition-colors">Преподаватели</Link></li>
+              <li><a href="#" className="hover:text-primary-foreground transition-colors">Вакансии</a></li>
+              <li><a href="#" className="hover:text-primary-foreground transition-colors">Контакты</a></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="mb-4">Support</h4>
+            <h4 className="mb-4">Поддержка</h4>
             <ul className="space-y-2 text-primary-foreground/80">
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Cookie Policy</a></li>
-              <li><a href="#" className="hover:text-primary-foreground transition-colors">Accessibility</a></li>
+              <li><a href="#" className="hover:text-primary-foreground transition-colors">Справочный центр</a></li>
+              <li><a href="#" className="hover:text-primary-foreground transition-colors">Условия использования</a></li>
+              <li><a href="#" className="hover:text-primary-foreground transition-colors">Политика конфиденциальности</a></li>
+              <li><a href="#" className="hover:text-primary-foreground transition-colors">Файлы cookie</a></li>
+              <li><a href="#" className="hover:text-primary-foreground transition-colors">Доступность</a></li>
             </ul>
           </div>
         </div>
 
         <div className="pt-8 border-t border-primary-foreground/10 text-center text-primary-foreground/80">
-          <p>&copy; 2026 EduCenter. All rights reserved.</p>
+          <p>© 2026 ВысшийБалл. Все права защищены.</p>
         </div>
       </div>
     </footer>

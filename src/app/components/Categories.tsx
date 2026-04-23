@@ -9,12 +9,12 @@ import {
 
 export function Categories() {
   const categories = [
-    { icon: Code, name: "Web Development", courses: 450 },
-    { icon: Database, name: "Data Science", courses: 320 },
-    { icon: Briefcase, name: "Business", courses: 280 },
-    { icon: Palette, name: "Design", courses: 390 },
-    { icon: TrendingUp, name: "Marketing", courses: 210 },
-    { icon: Camera, name: "Photography", courses: 180 },
+    { icon: Code, name: "Веб-разработка", courses: 450 },
+    { icon: Database, name: "Анализ данных", courses: 320 },
+    { icon: Briefcase, name: "Бизнес", courses: 280 },
+    { icon: Palette, name: "Дизайн", courses: 390 },
+    { icon: TrendingUp, name: "Маркетинг", courses: 210 },
+    { icon: Camera, name: "Фотография", courses: 180 },
   ];
 
   return (
@@ -35,14 +35,14 @@ export function Categories() {
               key={index}
               className="bg-card p-6 rounded-xl border border-border hover:border-primary hover:shadow-lg transition-all cursor-pointer group"
             >
-              <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors mx-auto">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-950 rounded-lg flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors mx-auto">
                 <category.icon className="w-6 h-6" />
               </div>
               <h4 className="text-center mb-2">
                 {category.name}
               </h4>
               <p className="text-sm text-muted-foreground text-center">
-                {category.courses} courses
+                {category.courses} курсов
               </p>
             </div>
           ))}

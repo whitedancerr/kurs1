@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { BookOpen, Mail, Lock, User, Phone } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 type RegisterFormData = {
   fullName: string;
@@ -13,18 +15,44 @@ type RegisterFormData = {
 
 export function Register() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterFormData>();
+  const { registerWithEmail, authMode } = useAuth();
+  const navigate = useNavigate();
+  const [submitError, setSubmitError] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
   const password = watch('password');
 
-  const onSubmit = (data: RegisterFormData) => {
-    console.log('Registration data:', data);
-    alert(`Регистрация успешна!\nИмя: ${data.fullName}\nEmail: ${data.email}\nТелефон: ${data.phone}`);
+  const onSubmit = async (data: RegisterFormData) => {
+    setSubmitError('');
+    setSubmitting(true);
+    const result = await registerWithEmail({
+      fullName: data.fullName,
+      email: data.email,
+      phone: data.phone,
+      password: data.password,
+    });
+    setSubmitting(false);
+
+    if (!result.ok) {
+      setSubmitError(result.error);
+      return;
+    }
+
+    if (result.needsEmailConfirm) {
+      navigate('/login', {
+        replace: true,
+        state: { registered: true },
+      });
+      return;
+    }
+
+    navigate('/profile', { replace: true });
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-[calc(100vh-4rem)] bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-slate-950 dark:to-slate-900 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-card text-card-foreground rounded-2xl shadow-xl border border-border p-8">
           <div className="text-center mb-8">
             <div className="flex justify-center mb-4">
               <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
@@ -33,11 +61,18 @@ export function Register() {
             </div>
             <h2 className="text-3xl mb-2">Создать аккаунт</h2>
             <p className="text-muted-foreground">
-              Начните свое обучение сегодня
+              {authMode === 'local'
+                ? 'Локальный режим: аккаунт сохраняется в браузере. После записи на курс статус станет «ученик».'
+                : 'Регистрация как гость; после записи на курс вы станете учеником.'}
             </p>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+            {submitError && (
+              <div className="bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-200 px-4 py-3 rounded-lg text-sm">
+                {submitError}
+              </div>
+            )}
             <div>
               <label htmlFor="fullName" className="block text-sm mb-2">
                 Полное имя
@@ -54,7 +89,7 @@ export function Register() {
                       message: 'Имя должно содержать минимум 2 символа'
                     }
                   })}
-                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
                   placeholder="Иван Иванов"
                 />
               </div>
@@ -79,7 +114,7 @@ export function Register() {
                       message: 'Неверный формат email'
                     }
                   })}
-                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
                   placeholder="name@example.com"
                 />
               </div>
@@ -104,7 +139,7 @@ export function Register() {
                       message: 'Неверный формат номера телефона'
                     }
                   })}
-                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
                   placeholder="+7 (999) 123-45-67"
                 />
               </div>
@@ -133,7 +168,7 @@ export function Register() {
                       message: 'Пароль должен содержать заглавные, строчные буквы и цифры'
                     }
                   })}
-                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
                   placeholder="••••••••"
                 />
               </div>
@@ -155,7 +190,7 @@ export function Register() {
                     required: 'Подтверждение пароля обязательно',
                     validate: value => value === password || 'Пароли не совпадают'
                   })}
-                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  className="w-full pl-11 pr-4 py-3 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-background"
                   placeholder="••••••••"
                 />
               </div>
@@ -190,9 +225,10 @@ export function Register() {
 
             <button
               type="submit"
-              className="w-full py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+              disabled={submitting}
+              className="w-full py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity disabled:opacity-60"
             >
-              Зарегистрироваться
+              {submitting ? 'Регистрация…' : 'Зарегистрироваться'}
             </button>
           </form>
 
@@ -210,7 +246,7 @@ export function Register() {
               Или зарегистрироваться через
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <button className="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors flex items-center justify-center gap-2">
+              <button type="button" className="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors flex items-center justify-center gap-2">
                 <svg className="w-5 h-5" viewBox="0 0 24 24">
                   <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                   <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -219,7 +255,7 @@ export function Register() {
                 </svg>
                 Google
               </button>
-              <button className="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors flex items-center justify-center gap-2">
+              <button type="button" className="px-4 py-2 border border-border rounded-lg hover:bg-accent transition-colors flex items-center justify-center gap-2">
                 <svg className="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                 </svg>

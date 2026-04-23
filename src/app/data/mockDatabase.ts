@@ -66,7 +66,7 @@ export const STUDENT_COURSES: Course[] = [
     progress: 65,
     totalLessons: 48,
     completedLessons: 31,
-    nextLesson: 'Advanced JavaScript Patterns',
+    nextLesson: 'Продвинутые паттерны JavaScript',
   },
 ];
 
@@ -79,7 +79,7 @@ export const ALL_COURSES = [
   },
   {
     id: 'c2',
-    title: 'Data Science Fundamentals',
+    title: 'Основы анализа данных',
     instructor: 'Анна Петрова',
   },
 ];

@@ -1,9 +1,10 @@
 import { BookOpen, Menu, Search, User } from "lucide-react";
 import { Link } from "react-router";
 import { useAuth } from "../contexts/AuthContext";
+import { ThemeToggle } from "./ThemeToggle";
 
 export function Header() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, authReady } = useAuth();
 
   return (
     <header className="border-b border-border bg-background sticky top-0 z-50">
@@ -17,37 +18,40 @@ export function Header() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-8">
-            <a
-              href="#"
+            <Link
+              to="/courses"
               className="text-foreground hover:text-primary transition-colors"
             >
               Курсы
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/programs"
               className="text-foreground hover:text-primary transition-colors"
             >
               Программы
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/teachers"
               className="text-foreground hover:text-primary transition-colors"
             >
               Преподаватели
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/about"
               className="text-foreground hover:text-primary transition-colors"
             >
               О нас
-            </a>
+            </Link>
           </nav>
 
-          <div className="flex items-center gap-4">
-            <button className="p-2 hover:bg-accent rounded-lg transition-colors">
+          <div className="flex items-center gap-2 sm:gap-4">
+            <ThemeToggle />
+            <button type="button" className="p-2 hover:bg-accent rounded-lg transition-colors" aria-label="Поиск">
               <Search className="w-5 h-5" />
             </button>
-            {isAuthenticated ? (
+            {!authReady ? (
+              <span className="hidden md:block w-28 h-9 rounded-lg bg-muted animate-pulse" aria-hidden />
+            ) : isAuthenticated ? (
               <Link
                 to="/profile"
                 className="hidden md:flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
