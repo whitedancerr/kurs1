@@ -9,6 +9,3 @@
 
   Run `npm run dev` to start the development server.
   
-  ## 2 users
-  ## Teacher: teacher@teacher.com / 123123123
-  ## Student: student@student.com / 123123123
